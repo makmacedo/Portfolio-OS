@@ -1,0 +1,530 @@
+<template id="app-settings">
+    <div class="w-full h-full overflow-auto">
+        <div class="p-6 space-y-6">
+            <h2 class="mb-4 text-xl font-semibold" data-i18n="apps.settings.title"></h2>
+            
+            <!-- Responsive flex container for System Settings and Clock -->
+            <div class="flex flex-col gap-6 lg:flex-row">
+                <!-- System Settings Column -->
+                <div class="flex-1 space-y-4">
+                    <h3 class="text-lg font-semibold" data-i18n="apps.settings.systemSettings"></h3>
+                    
+                    <!-- Language -->
+                    <div class="space-y-2">
+                        <h4 class="font-medium" data-i18n="apps.settings.language.title"></h4>
+                        <select id="language-select" class="w-full p-2 text-sm border rounded bg-slate-800/60 border-slate-700">
+                            <option value="pt" data-i18n="system.languages.pt"></option>
+                            <option value="en" data-i18n="system.languages.en"></option>
+                            <option value="es" data-i18n="system.languages.es"></option>
+                        </select>
+                    </div>
+
+                    <!-- Theme -->
+                    <div class="space-y-2">
+                        <h4 class="font-medium" data-i18n="apps.settings.theme.title"></h4>
+                        <select id="theme-select" class="w-full p-2 text-sm border rounded bg-slate-800/60 border-slate-700">
+                            <option value="system" data-i18n="apps.settings.theme.system"></option>
+                            <option value="dark" data-i18n="apps.settings.theme.dark"></option>
+                            <option value="light" data-i18n="apps.settings.theme.light"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Clock Settings Column -->
+                <div class="flex-1 space-y-4">
+                    <h3 class="text-lg font-semibold" data-i18n="apps.settings.clock.title"></h3>
+                    
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="show-date" class="rounded">
+                            <span class="text-sm" data-i18n="apps.settings.clock.showDate"></span>
+                        </label>
+                        
+                        <div>
+                            <label class="block mb-1 text-sm text-slate-300" data-i18n="apps.settings.clock.dateFormat"></label>
+                            <select id="date-format" class="w-full p-2 text-sm border rounded bg-slate-800/60 border-slate-700">
+                                <option value="dd/mm/yyyy" data-i18n="apps.settings.dateFormats.dd/mm/yyyy"></option>
+                                <option value="mm/dd/yyyy" data-i18n="apps.settings.dateFormats.mm/dd/yyyy"></option>
+                                <option value="yyyy-mm-dd" data-i18n="apps.settings.dateFormats.yyyy-mm-dd"></option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-1 text-sm text-slate-300" data-i18n="apps.settings.clock.timeFormat"></label>
+                            <select id="time-format" class="w-full p-2 text-sm border rounded bg-slate-800/60 border-slate-700">
+                                <option value="24h" data-i18n="apps.settings.clock.timeFormat24"></option>
+                                <option value="12h" data-i18n="apps.settings.clock.timeFormat12"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wallpaper -->
+            <div class="space-y-3">
+                <h3 class="font-medium" data-i18n="apps.settings.wallpaper.title"></h3>
+                <div class="space-y-4">
+                    <!-- Dynamic Color Gradients -->
+                    <div>
+                        <label class="block mb-2 text-sm text-slate-300" data-i18n="apps.settings.wallpaper.color"></label>
+                        <div id="dynamic-colors-container" class="grid grid-cols-4 gap-2">
+                            <!-- Will be populated dynamically from config -->
+                        </div>
+                    </div>
+                    
+                    <!-- Static Background Images -->
+                    <div id="static-images-section" class="space-y-2">
+                        <label class="block mb-2 text-sm text-slate-300" data-i18n="apps.settings.wallpaper.images"></label>
+                        <div id="static-images-container" class="grid grid-cols-3 gap-2">
+                            <!-- Will be populated dynamically from config -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2 pt-4 border-t border-slate-700">
+                <button id="settings-apply" class="px-4 py-2 text-sm rounded bg-brand-600 hover:bg-brand-500" data-i18n="apps.settings.apply">
+                </button>
+                <button id="settings-reset" class="px-4 py-2 text-sm rounded bg-slate-700 hover:bg-slate-600" data-i18n="apps.settings.reset">
+                </button>
+            </div>
+            <div class="mt-2">
+                <span data-role="status" class="text-xs text-green-400"></span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+// Helper function to get current language with fallback
+function getCurrentLanguage() {
+    if (typeof window.currentLang === 'function') {
+        return window.currentLang();
+    }
+    // Fallback to localStorage or config
+    return localStorage.getItem('arc.language') || 
+           (window.config?.profiles?.default?.language) || 'en';
+}
+
+function initSettings(w) {
+    console.log('=== SETTINGS INITIALIZATION ===');
+    console.log('Settings window:', w);
+    
+    const settings = JSON.parse(localStorage.getItem('arc.settings') || '{}');
+    console.log('Current settings:', settings);
+
+    // Load current settings
+    $('#language-select', w).value = getCurrentLanguage();
+    $('#theme-select', w).value = localStorage.getItem('arc.theme') || 'system';
+    $('#show-date', w).checked = settings.showDate !== false;
+    $('#date-format', w).value = settings.dateFormat || 'dd/mm/yyyy';
+    $('#time-format', w).value = settings.timeFormat || '24h';
+
+    // Generate wallpaper options from config (with small delay to ensure config is loaded)
+    setTimeout(() => {
+        generateWallpaperOptions(w, settings);
+    }, 100);
+
+    // Update wallpaper button colors based on current theme
+    updateWallpaperPreview(w);
+
+    // Highlight current wallpaper (including default from config if no user setting)
+    let currentWallpaper = null;
+    let currentWallpaperImage = null;
+
+    if (settings.wallpaper || settings.wallpaperImage) {
+        // User has set a wallpaper
+        currentWallpaper = settings.wallpaper;
+        currentWallpaperImage = settings.wallpaperImage;
+    } else {
+        // Use default from config
+        const defaultWallpaper = resolveDefaultWallpaper();
+        if (defaultWallpaper) {
+            if (defaultWallpaper.path) {
+                currentWallpaperImage = defaultWallpaper.path;
+            } else if (defaultWallpaper.darkClass) {
+                const isLightTheme = !document.documentElement.classList.contains('dark');
+                currentWallpaper = isLightTheme ? defaultWallpaper.lightClass : defaultWallpaper.darkClass;
+            }
+        } else {
+            currentWallpaper = 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900';
+        }
+    }
+
+    $$('.wallpaper-color', w).forEach(btn => {
+        const isLightTheme = !document.documentElement.classList.contains('dark');
+        const bgToCheck = isLightTheme ? btn.dataset.bgLight : btn.dataset.bgDark;
+        const matches = bgToCheck === currentWallpaper;
+        btn.classList.toggle('ring-2', matches);
+        btn.classList.toggle('ring-brand-500', matches);
+    });
+
+    // Event listener for theme change (update wallpaper previews)
+    $('#theme-select', w).onchange = () => {
+        setTimeout(() => {
+            updateColorPreviews(w);
+            generateWallpaperOptions(w, JSON.parse(localStorage.getItem('arc.settings') || '{}'));
+        }, 100);
+    };
+
+    // Apply settings
+    $('#settings-apply', w).onclick = async () => {
+        const newLang = $('#language-select', w).value;
+        const oldLang = getCurrentLanguage(); // Use the same function we defined above
+
+        // Get selected wallpaper
+        const selectedWallpaper = getSelectedWallpaper(w);
+
+        const newSettings = {
+            language: newLang,
+            showDate: $('#show-date', w).checked,
+            dateFormat: $('#date-format', w).value,
+            timeFormat: $('#time-format', w).value,
+            ...selectedWallpaper
+        };
+
+        // Change language if different
+        if (newLang !== oldLang) {
+            await changeLanguage(newLang);
+        }
+
+        // Apply theme first and save it
+        const selectedTheme = $('#theme-select', w).value;
+        applyTheme(selectedTheme);
+        localStorage.setItem('arc.theme', selectedTheme);
+
+        // Apply the selected wallpaper
+        saveAndApplySettings(newSettings);
+
+        $('[data-role="status"]', w).textContent = t('apps.settings.applied');
+        setTimeout(() => {
+            const statusEl = $('[data-role="status"]', w);
+            if (statusEl) statusEl.textContent = '';
+        }, 2000);
+    };
+
+    // Reset to defaults
+    $('#settings-reset', w).onclick = () => {
+        if (confirm('Restaurar todas as configurações para o padrão?')) {
+            localStorage.removeItem('arc.settings');
+            localStorage.removeItem('arc.theme');
+            document.body.className = 'h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 select-none';
+            document.body.style.backgroundImage = '';
+            applyTheme('system');
+            updateClock();
+            
+            // Close settings window and refresh
+            const appId = w.dataset.appId;
+            if (appId && window.WM && window.WM.wins.has(appId)) {
+                window.closeWin(w);
+            }
+        }
+    };
+}
+
+// Helper function to generate color wallpaper data (matches WallpaperManager logic)
+function generateColorWallpaperData(colorBase, isLightTheme = false) {
+    const colorMap = {
+      gray: { name: 'Gray', from: 'slate-900', via: 'slate-800', to: 'slate-900', light: 'slate-100', lightVia: 'slate-200', 
+              hex: { dark: { from: '#0f172a', via: '#1e293b', to: '#0f172a' }, light: { from: '#f1f5f9', via: '#e2e8f0', to: '#f1f5f9' } } },
+      blue: { name: 'Blue', from: 'blue-900', via: 'blue-800', to: 'blue-900', light: 'blue-100', lightVia: 'blue-200', 
+              hex: { dark: { from: '#1e3a8a', via: '#1e40af', to: '#1e3a8a' }, light: { from: '#dbeafe', via: '#bfdbfe', to: '#dbeafe' } } },
+      purple: { name: 'Purple', from: 'purple-900', via: 'purple-800', to: 'purple-900', light: 'purple-100', lightVia: 'purple-200', 
+                hex: { dark: { from: '#581c87', via: '#6b21a8', to: '#581c87' }, light: { from: '#faf5ff', via: '#e9d5ff', to: '#faf5ff' } } },
+      green: { name: 'Green', from: 'green-900', via: 'green-800', to: 'green-900', light: 'green-100', lightVia: 'green-200', 
+               hex: { dark: { from: '#14532d', via: '#166534', to: '#14532d' }, light: { from: '#dcfce7', via: '#bbf7d0', to: '#dcfce7' } } },
+      red: { name: 'Red', from: 'red-900', via: 'red-800', to: 'red-900', light: 'red-100', lightVia: 'red-200', 
+             hex: { dark: { from: '#7f1d1d', via: '#991b1b', to: '#7f1d1d' }, light: { from: '#fee2e2', via: '#fecaca', to: '#fee2e2' } } },
+      amber: { name: 'Amber', from: 'amber-900', via: 'amber-800', to: 'amber-900', light: 'amber-100', lightVia: 'amber-200', 
+               hex: { dark: { from: '#78350f', via: '#92400e', to: '#78350f' }, light: { from: '#fef3c7', via: '#fde68a', to: '#fef3c7' } } },
+      indigo: { name: 'Indigo', from: 'indigo-900', via: 'indigo-800', to: 'indigo-900', light: 'indigo-100', lightVia: 'indigo-200', 
+                hex: { dark: { from: '#312e81', via: '#3730a3', to: '#312e81' }, light: { from: '#e0e7ff', via: '#c7d2fe', to: '#e0e7ff' } } },
+      solid: { name: 'Solid', from: 'slate-900', via: null, to: null, light: 'slate-50', lightVia: null, 
+               hex: { dark: { solid: '#0f172a' }, light: { solid: '#f8fafc' } } }
+    };
+
+    const color = colorMap[colorBase];
+    if (!color) return null;
+
+    const hexColors = isLightTheme ? color.hex.light : color.hex.dark;
+
+    if (colorBase === 'solid') {
+      return {
+        id: colorBase,
+        name: color.name,
+        darkClass: `bg-${color.from}`,
+        lightClass: `bg-${color.light}`,
+        previewStyle: `background: ${hexColors.solid};`
+      };
+    }
+
+    return {
+      id: colorBase,
+      name: color.name,
+      darkClass: `bg-gradient-to-br from-${color.from} via-${color.via} to-${color.to}`,
+      lightClass: `bg-gradient-to-br from-${color.light} via-${color.lightVia} to-${color.light}`,
+      previewStyle: `background: linear-gradient(135deg, ${hexColors.from} 0%, ${hexColors.via} 50%, ${hexColors.to} 100%);`
+    };
+}
+
+// Helper function to update color previews when theme changes
+function updateColorPreviews(w) {
+    const isLightTheme = $('#theme-select', w).value === 'light' ||
+        ($('#theme-select', w).value === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches);
+    
+    const colorButtons = w.querySelectorAll('.wallpaper-color[data-color-base]');
+    colorButtons.forEach(button => {
+        const colorBase = button.dataset.colorBase;
+        const colorData = generateColorWallpaperData(colorBase, isLightTheme);
+        if (colorData) {
+            button.style.cssText = colorData.previewStyle;
+        }
+    });
+}
+
+// Helper functions for dynamic wallpaper system
+function generateWallpaperOptions(w, settings) {
+    console.log('=== generateWallpaperOptions DEBUG ===');
+    console.log('Window element:', w);
+    console.log('Config available:', !!window.config);
+    console.log('Wallpaper categories config:', window.config?.ui?.wallpaperCategories);
+
+    const dynamicContainer = $('#dynamic-colors-container', w);
+    const staticContainer = $('#static-images-container', w);
+    const staticSection = $('#static-images-section', w);
+
+    console.log('Containers found:', {
+        dynamic: !!dynamicContainer,
+        static: !!staticContainer,
+        section: !!staticSection
+    });
+    
+    console.log('Dynamic container element:', dynamicContainer);
+
+    // Clear existing content
+    if (dynamicContainer) dynamicContainer.innerHTML = '';
+    if (staticContainer) staticContainer.innerHTML = '';
+
+    const wallpaperCategories = window.config?.ui?.wallpaperCategories;
+    if (!wallpaperCategories) {
+        console.warn('No wallpaper categories config found');
+        console.log('Config structure:', window.config);
+        // Try to generate some basic colors as fallback
+        if (dynamicContainer) {
+            console.log('Generating fallback colors');
+            generateFallbackWallpapers(dynamicContainer, w);
+        }
+        return;
+    }
+    
+    console.log('Found wallpaper categories:', wallpaperCategories);
+
+    const isLightTheme = $('#theme-select', w).value === 'light' ||
+        ($('#theme-select', w).value === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches);
+
+    // Generate dynamic color buttons from colorBases
+    if (wallpaperCategories.dynamicColors && wallpaperCategories.dynamicColors.colorBases) {
+        wallpaperCategories.dynamicColors.colorBases.forEach(colorBase => {
+            // Generate color wallpaper data (similar to WallpaperManager)
+            const colorData = generateColorWallpaperData(colorBase, isLightTheme);
+            if (colorData) {
+                const button = document.createElement('button');
+                button.className = 'wallpaper-color aspect-square rounded-lg border-2 border-slate-600';
+                button.dataset.bgDark = colorData.darkClass;
+                button.dataset.bgLight = colorData.lightClass;
+                button.dataset.wallpaperType = 'gradient';
+                button.dataset.wallpaperId = colorData.id;
+                button.dataset.colorBase = colorBase; // Store for theme updates
+                button.style.cssText = colorData.previewStyle;
+                button.title = colorData.name;
+
+                button.onclick = () => selectWallpaper(w, button);
+                dynamicContainer.appendChild(button);
+            }
+        });
+    }
+
+    // Generate static image buttons
+    if (wallpaperCategories.staticImages && wallpaperCategories.staticImages.images) {
+        const basePath = wallpaperCategories.staticImages.path || 'media/wallpapers/';
+        wallpaperCategories.staticImages.images.forEach(imageName => {
+            const imageId = imageName.replace(/\.[^/.]+$/, ""); // Remove extension
+            const imagePath = basePath + imageName;
+            const displayName = imageId.split('-').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+            
+            const button = document.createElement('button');
+            button.className = 'wallpaper-image aspect-square rounded-lg border-2 border-slate-600';
+            button.dataset.wallpaperType = 'image';
+            button.dataset.wallpaperId = imageId;
+            button.dataset.imagePath = imagePath;
+
+            // Set background image for preview
+            button.style.backgroundImage = `url(${imagePath})`;
+            button.style.backgroundSize = 'cover';
+            button.style.backgroundPosition = 'center';
+
+            button.title = displayName;
+            button.onclick = () => selectWallpaper(w, button);
+            staticContainer.appendChild(button);
+        });
+
+        // Show the static images section
+        staticSection.style.display = 'block';
+    } else {
+        // Hide static images section if no images
+        staticSection.style.display = 'none';
+    }
+
+    // Highlight current wallpaper
+    highlightCurrentWallpaper(w, settings);
+}
+
+function selectWallpaper(w, button) {
+    // Clear all selections
+    clearAllWallpaperSelections(w);
+
+    // Select this button
+    button.classList.add('ring-2', 'ring-brand-500');
+}
+
+function clearAllWallpaperSelections(w) {
+    $$('.wallpaper-color, .wallpaper-image', w).forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-brand-500');
+    });
+}
+
+function getSelectedWallpaper(w) {
+    const selectedBtn = $('.wallpaper-color.ring-2, .wallpaper-image.ring-2', w);
+    if (!selectedBtn) return {};
+
+    const isLightTheme = $('#theme-select', w).value === 'light' ||
+        ($('#theme-select', w).value === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches);
+
+    if (selectedBtn.dataset.wallpaperType === 'gradient') {
+        return {
+            wallpaper: isLightTheme ? selectedBtn.dataset.bgLight : selectedBtn.dataset.bgDark,
+            wallpaperType: 'gradient',
+            wallpaperId: selectedBtn.dataset.wallpaperId
+        };
+    } else if (selectedBtn.dataset.wallpaperType === 'image') {
+        return {
+            wallpaperImage: selectedBtn.dataset.imagePath,
+            wallpaperType: 'image',
+            wallpaperId: selectedBtn.dataset.wallpaperId,
+            wallpaper: null
+        };
+    }
+
+    return {};
+}
+
+function highlightCurrentWallpaper(w, settings) {
+    let currentWallpaper = null;
+    let currentWallpaperImage = null;
+
+    if (settings.wallpaper || settings.wallpaperImage) {
+        // User has set a wallpaper
+        currentWallpaper = settings.wallpaper;
+        currentWallpaperImage = settings.wallpaperImage;
+    } else {
+        // Use default from config
+        const defaultWallpaper = resolveDefaultWallpaper();
+        if (defaultWallpaper) {
+            if (defaultWallpaper.path) {
+                currentWallpaperImage = defaultWallpaper.path;
+            } else if (defaultWallpaper.darkClass) {
+                const isLightTheme = $('#theme-select', w).value === 'light' ||
+                    ($('#theme-select', w).value === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches);
+                currentWallpaper = isLightTheme ? defaultWallpaper.lightClass : defaultWallpaper.darkClass;
+            }
+        } else {
+            currentWallpaper = 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900';
+        }
+    }
+
+    const isLightTheme = $('#theme-select', w).value === 'light' ||
+        ($('#theme-select', w).value === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches);
+
+    // Check gradient colors
+    $$('.wallpaper-color', w).forEach(btn => {
+        const bgToCheck = isLightTheme ? btn.dataset.bgLight : btn.dataset.bgDark;
+        const isSelected = bgToCheck === currentWallpaper;
+        btn.classList.toggle('ring-2', isSelected);
+        btn.classList.toggle('ring-brand-500', isSelected);
+    });
+
+    // Check image wallpapers
+    if (currentWallpaperImage) {
+        $$('.wallpaper-image', w).forEach(btn => {
+            const isSelected = btn.dataset.imagePath === currentWallpaperImage;
+            btn.classList.toggle('ring-2', isSelected);
+            btn.classList.toggle('ring-brand-500', isSelected);
+        });
+    }
+}
+
+function generateFallbackWallpapers(container, w) {
+    // Fallback hardcoded wallpapers if config is not available
+    const fallbackColors = [
+        { id: 'default', name: 'Default', darkClass: 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900', lightClass: 'bg-gradient-to-br from-slate-100 via-slate-200 to-slate-100', previewStyle: 'background: linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a);' },
+        { id: 'blue', name: 'Blue', darkClass: 'bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900', lightClass: 'bg-gradient-to-br from-blue-100 via-blue-200 to-blue-100', previewStyle: 'background: linear-gradient(to bottom right, #1e3a8a, #1e40af, #1e3a8a);' },
+        { id: 'purple', name: 'Purple', darkClass: 'bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900', lightClass: 'bg-gradient-to-br from-purple-100 via-purple-200 to-purple-100', previewStyle: 'background: linear-gradient(to bottom right, #581c87, #6b21a8, #581c87);' },
+        { id: 'green', name: 'Green', darkClass: 'bg-gradient-to-br from-green-900 via-green-800 to-green-900', lightClass: 'bg-gradient-to-br from-green-100 via-green-200 to-green-100', previewStyle: 'background: linear-gradient(to bottom right, #14532d, #166534, #14532d);' }
+    ];
+
+    fallbackColors.forEach(color => {
+        const button = document.createElement('button');
+        button.className = 'wallpaper-color aspect-square rounded-lg border-2 border-slate-600';
+        button.dataset.bgDark = color.darkClass;
+        button.dataset.bgLight = color.lightClass;
+        button.dataset.wallpaperType = 'gradient';
+        button.dataset.wallpaperId = color.id;
+        button.style.cssText = color.previewStyle;
+        button.title = color.name;
+
+        button.onclick = () => selectWallpaper(w, button);
+        container.appendChild(button);
+    });
+}
+
+function updateWallpaperPreview(w) {
+    const isLightTheme = $('#theme-select', w).value === 'light' || 
+                        ($('#theme-select', w).value === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches);
+    
+    $$('.wallpaper-color', w).forEach(btn => {
+        const darkBg = btn.dataset.bgDark;
+        const lightBg = btn.dataset.bgLight;
+        
+        if (darkBg && darkBg.includes('gradient')) {
+            // For gradients, keep the preview as is since it's already set
+            // The visual feedback comes from the ring selection
+        }
+    });
+}
+
+function saveAndApplySettings(settings) {
+    localStorage.setItem('arc.settings', JSON.stringify(settings));
+
+    // Use the global wallpaper application function
+    if (typeof window.applyWallpaperSettings === 'function') {
+        window.applyWallpaperSettings(settings);
+    } else {
+        console.warn('applyWallpaperSettings function not available');
+    }
+
+    // Update clock (if theme changed)
+    updateClock();
+}
+
+// Auto-initialize when template is loaded
+setTimeout(() => {
+    const settingsWindow = document.querySelector('[data-app="settings"]');
+    if (settingsWindow) {
+        console.log('Auto-initializing settings window');
+        initSettings(settingsWindow);
+    }
+}, 200);
+</script>

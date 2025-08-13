@@ -1,0 +1,126 @@
+{
+  "system": {
+    "title": "Arc OS – Portfolio Desktop",
+    "start": "Start",
+    "settings": "⚙️ Settings",
+    "lock": "🔒 Lock",
+    "lockMessage": "Desktop locked. Press <b>ESC</b> or hold for 1s to unlock.",
+    "loading": "Loading...",
+    "loaded": "Loaded",
+    "error": "Error loading",
+    "saved": "Saved",
+    "applied": "Settings saved!",
+    "close": "Close",
+    "minimize": "Minimize",
+    "maximize": "Maximize",
+    "window": "Window",
+    "portfolioOS": "Portfolio OS",
+    "languages": {
+      "pt": "Português",
+      "en": "English",
+      "es": "Español"
+    }
+  },
+  "apps": {
+    "about": {
+      "title": "About the App",
+      "greeting": "Hello 👋 I'm Arcádio. Welcome to my interactive \"desktop\" portfolio.",
+      "description": "This is a comprehensive portfolio presented as a fully-functional web operating system. Explore the desktop environment, interact with applications, customize settings, and discover my professional experience through an immersive OS interface.",
+      "featuresTitle": "🖥️ System Features:",
+      "appsTitle": "📱 Applications:",
+      "features": {
+        "windows": "Full window management - drag, resize, minimize, maximize",
+        "desktop": "Interactive desktop with draggable icons and custom positioning",
+        "taskbar": "Dynamic taskbar with running applications and system clock",
+        "startMenu": "Start menu with application launcher and system controls",
+        "multiLanguage": "Multi-language support (English, Portuguese, Spanish)",
+        "themes": "Dark/light theme system with automatic detection",
+        "wallpapers": "Dynamic wallpaper system with gradients and custom images",
+        "bootSequence": "Authentic boot sequence with configurable timing",
+        "lockScreen": "Desktop lock functionality with unlock mechanisms",
+        "notes": "Rich notes application with auto-save and persistent storage",
+        "resume": "Interactive professional resume and portfolio showcase",
+        "calculator": "Fully functional calculator with keyboard support",
+        "games": "Built-in games including Tic-Tac-Toe",
+        "externalApps": "External application integration via iframe embedding",
+        "settings": "Comprehensive settings panel for system customization"
+      },
+      "tech": "Built with modern web technologies: Vanilla JavaScript ES6+, TailwindCSS, HTML5 templates, localStorage persistence, responsive design, and modular architecture. Zero build tools, pure client-side implementation."
+    },
+    "notes": {
+      "title": "Notes",
+      "placeholder": "Your notes…",
+      "save": "Save",
+      "autosave": "Autosave"
+    },
+    "resume": {
+      "title": "Resume",
+      "description": "Arcadio Macedo - Software Engineer (pdf)",
+      "stack": "Stack",
+      "stackContent": "PHP (Laravel), JS (Vue), Tailwind, MySQL, Docker, AWS.",
+      "experience": "Experience",
+      "experienceContent": "8+ years in environmental compliance SaaS (BOMcheck, EC4P).",
+      "contact": "Contact",
+      "email": "Email:"
+    },
+    "calc": {
+      "title": "Calculator",
+      "error": "Error"
+    },
+    "ttt": {
+      "title": "Tic-Tac-Toe"
+    },
+    "fuel": {
+      "title": "Fuel Consumption"
+    },
+    "settings": {
+      "title": "Settings",
+      "systemSettings": "System Settings",
+      "language": {
+        "title": "Language"
+      },
+      "theme": {
+        "title": "Theme",
+        "system": "System based",
+        "dark": "Dark",
+        "light": "Light"
+      },
+      "clock": {
+        "title": "Clock",
+        "showDate": "Show date",
+        "dateFormat": "Date format:",
+        "timeFormat": "Time format:",
+        "timeFormat24": "24 hours",
+        "timeFormat12": "12 hours (AM/PM)"
+      },
+      "wallpaper": {
+        "title": "Wallpaper",
+        "color": "Background color:",
+        "images": "Background images:"
+      },
+      "apply": "Apply",
+      "reset": "Restore Defaults",
+      "resetConfirm": "Restore all settings to default?",
+      "applied": "Settings saved!",
+      "colors": {
+        "default": "Default (Gray)",
+        "blue": "Blue",
+        "purple": "Purple",
+        "green": "Green",
+        "red": "Red",
+        "amber": "Amber",
+        "indigo": "Indigo",
+        "solid": "Solid"
+      },
+      "dateFormats": {
+        "dd/mm/yyyy": "DD/MM/YYYY",
+        "mm/dd/yyyy": "MM/DD/YYYY",
+        "yyyy-mm-dd": "YYYY-MM-DD"
+      }
+    },
+    "profile": {
+      "name": "Arcádio Macedo",
+      "subtitle": "Portfolio OS"
+    }
+  }
+}

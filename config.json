@@ -1,0 +1,240 @@
+{
+  "system": {
+    "name": "Arc OS",
+    "version": "2.0",
+    "title": "Arc OS – Portfolio Desktop"
+  },
+  "profiles": {
+    "default": {
+      "name": "Arcadio Macedo",
+      "subtitle": "Web Developer",
+      "avatar": "AM",
+      "theme": "system",
+      "language": "en",
+      "wallpaper": "staticImages.suspension-bridge",
+      "debug": false,
+      "autoOpenApp": "resume"
+    },
+    "admin": {
+      "passwordType": "prime",
+      "password": null,
+      "name": "Administrator",
+      "subtitle": "Debug Mode Access",
+      "avatar": "🔑",
+      "theme": "dark",
+      "language": "en",
+      "wallpaper": "dynamicColors.gray",
+      "debug": true,
+      "overrideGlobalDebug": true,
+      "autoOpenApp": "settings"
+    }
+  },
+  "boot": {
+    "enabled": true,
+    "timeoutMinutes": 10,
+    "animationSpeed": "normal",
+    "skipOnRecentVisit": false,
+    "timings": {
+      "messageDelayMin": 200,
+      "messageDelayMax": 1000,
+      "stageFadeIn": 500,
+      "stageDelay": 300,
+      "iconStagger": 100
+    },
+    "messageGroups": {
+      "kernel": [
+        "Loading Portfolio OS v2.0...",
+        "Kernel 6.2.0-arc booting...",
+        "Detecting hardware configuration..."
+      ],
+      "drivers": [
+        "Loading system drivers...",
+        "Initializing memory management...",
+        "Starting core services..."
+      ],
+      "filesystem": [
+        "Mounting virtual file systems...",
+        "Loading configuration files..."
+      ],
+      "desktop": [
+        "Initializing desktop environment...",
+        "Starting window manager...",
+        "Loading user interface components...",
+        "Preparing applications..."
+      ],
+      "network": [
+        "Enabling network services..."
+      ],
+      "complete": [
+        "System initialization complete.",
+        "Desktop ready."
+      ]
+    }
+  },
+  "ui": {
+    "showClock": true,
+    "showDate": true,
+    "windowDefaults": {
+      "width": 640,
+      "height": 420,
+      "left": 100,
+      "top": 100,
+      "minWidth": 200,
+      "minHeight": 150
+    },
+    "taskbar": {
+      "height": 48,
+      "position": "bottom",
+      "autohide": false
+    },
+    "desktop": {
+      "iconSize": 80,
+      "iconSpacing": 16,
+      "gridSnap": true
+    },
+    "wallpaperCategories": {
+      "dynamicColors": {
+        "name": "Dynamic Colors",
+        "colorBases": [
+          "gray",
+          "blue",
+          "purple",
+          "green",
+          "red",
+          "amber",
+          "indigo",
+          "solid"
+        ]
+      },
+      "staticImages": {
+        "name": "Static Images",
+        "path": "media/wallpapers/",
+        "images": [
+          "suspension-bridge.jpg",
+          "nordic-night.jpg",
+          "purple-mountains.jpg",
+          "scotland-sunrise.jpg",
+          "wild-scotland.jpg"
+        ]
+      }
+    }
+  },
+  "appCategories": {
+    "productivity": {
+      "name": "Productivity",
+      "icon": "💼"
+    },
+    "entertainment": {
+      "name": "Entertainment",
+      "icon": "🎮"
+    },
+    "development": {
+      "name": "Development",
+      "icon": "⚙️"
+    }
+  },
+  "appTemplates": {
+    "native": {
+      "templateFile": "templates/app-{id}.html",
+      "templateId": "app-{id}",
+      "type": "native"
+    },
+    "external": {
+      "templateFile": "templates/app-external.html",
+      "templateId": "app-external",
+      "type": "external",
+      "zoom": 1.0
+    }
+  },
+  "apps": [
+    {
+      "id": "about",
+      "extends": "native",
+      "category": "productivity",
+      "title": "apps.about.title",
+      "icon": "💬",
+      "showOnDesktop": true
+    },
+    {
+      "id": "notes",
+      "extends": "native",
+      "category": "productivity",
+      "title": "apps.notes.title",
+      "icon": "📝",
+      "showOnDesktop": true
+    },
+    {
+      "id": "resume",
+      "extends": "native",
+      "category": "productivity",
+      "title": "apps.resume.title",
+      "icon": "📄",
+      "showOnDesktop": true
+    },
+    {
+      "id": "calc",
+      "extends": "native",
+      "category": "productivity",
+      "title": "apps.calc.title",
+      "icon": "🧮",
+      "showOnDesktop": true,
+      "window": {
+        "left": 800,
+        "top": 400,
+        "width": 300,
+        "height": 300
+      }
+    },
+    {
+      "id": "ttt",
+      "extends": "external",
+      "category": "entertainment",
+      "title": "apps.ttt.title",
+      "icon": "🎮",
+      "url": "http://tic-tac-toe.macedo.tech/",
+      "showOnDesktop": true,
+      "zoom": 0.8,
+      "window": {
+        "left": 250,
+        "top": 25,
+        "width": 740,
+        "height": 740
+      }
+    },
+    {
+      "id": "fuel",
+      "extends": "external",
+      "category": "productivity",
+      "title": "apps.fuel.title",
+      "icon": "⛽",
+      "url": "https://fuel.macedo.tech",
+      "showOnDesktop": false
+    },
+    {
+      "id": "settings",
+      "extends": "native",
+      "category": "development",
+      "title": "system.settings",
+      "icon": "⚙️",
+      "systemApp": true
+    }
+  ],
+  "debug": {
+    "enabled": true,
+    "showTemplateLoading": true,
+    "showAppInitialization": true,
+    "showTranslations": false
+  },
+  "development": {
+    "templateCaching": false,
+    "consoleOutput": true,
+    "hotReload": false,
+    "debugCategories": [
+      "system",
+      "app",
+      "template",
+      "boot",
+      "window"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+<template id="login-screen">
+    <div class="fixed inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center z-[100000]" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%) !important;">
+        <div class="bg-slate-800/90 backdrop-blur-xl border border-slate-700 rounded-2xl p-8 w-96 shadow-2xl" style="background-color: rgba(30, 41, 59, 0.9) !important; border-color: #334155 !important;">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-brand-600 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-bold">
+                    AM
+                </div>
+                <h1 class="text-2xl font-bold text-slate-100 mb-2" style="color: #f1f5f9 !important;">Arc OS</h1>
+                <p class="text-slate-400 text-sm" style="color: #94a3b8 !important;">Select a user to continue</p>
+            </div>
+
+            <!-- User Options -->
+            <div class="space-y-3 mb-6">
+                <!-- Regular User -->
+                <button id="login-user" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-100 py-3 px-4 rounded-lg flex items-center justify-between transition-colors group" style="background-color: #334155 !important; color: #f1f5f9 !important;">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-brand-500 rounded-full flex items-center justify-center text-sm font-bold">
+                            AM
+                        </div>
+                        <div class="text-left">
+                            <div class="font-semibold" style="color: #f1f5f9 !important;">Arcadio Macedo</div>
+                            <div class="text-xs text-slate-400" style="color: #94a3b8 !important;">Standard User</div>
+                        </div>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #94a3b8 !important;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </button>
+
+                <!-- Administrator -->
+                <button id="login-admin" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-100 py-3 px-4 rounded-lg flex items-center justify-between transition-colors group" style="background-color: #334155 !important; color: #f1f5f9 !important;">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-sm font-bold">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-4 4-4-4 4-4 .257-.257A6 6 0 1118 8zm-6-2a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <div class="font-semibold" style="color: #f1f5f9 !important;">Administrator</div>
+                            <div class="text-xs text-slate-400" style="color: #94a3b8 !important;">Debug Mode Access</div>
+                        </div>
+                    </div>
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #94a3b8 !important;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- PIN Input (hidden initially) -->
+            <div id="pin-section" class="hidden">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-slate-300 mb-2" style="color: #cbd5e1 !important;">
+                        Administrator PIN
+                        <span id="pin-hint" class="text-xs text-slate-500 block mt-1" style="color: #64748b !important;">Hint: Any 4-digit prime number will work</span>
+                    </label>
+                    <input 
+                        type="password" 
+                        id="pin-input" 
+                        maxlength="4" 
+                        class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 text-center text-lg tracking-widest"
+                        placeholder="••••"
+                        style="background-color: #334155 !important; border-color: #475569 !important; color: #f1f5f9 !important;"
+                    />
+                </div>
+                <div class="flex space-x-3">
+                    <button id="pin-cancel" class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-300 py-2 px-4 rounded-lg transition-colors" style="background-color: #334155 !important; color: #cbd5e1 !important;">
+                        Cancel
+                    </button>
+                    <button id="pin-login" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        Login
+                    </button>
+                </div>
+                <div id="pin-error" class="hidden text-red-400 text-sm mt-2 text-center"></div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center text-xs text-slate-500 mt-6" style="color: #64748b !important;">
+                Arc OS v2.0 • Portfolio Desktop Environment
+            </div>
+        </div>
+    </div>
+</template>

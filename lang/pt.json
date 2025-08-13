@@ -1,0 +1,126 @@
+{
+  "system": {
+    "title": "Arc OS – Portfolio Desktop",
+    "start": "Start",
+    "settings": "⚙️ Configurações",
+    "lock": "🔒 Bloquear",
+    "lockMessage": "Desktop bloqueado. Pressione <b>ESC</b> ou mantenha pressionado por 1s para desbloquear.",
+    "loading": "Carregando...",
+    "loaded": "Carregado",
+    "error": "Erro ao carregar",
+    "saved": "Salvo",
+    "applied": "Configurações salvas!",
+    "close": "Fechar",
+    "minimize": "Minimizar",
+    "maximize": "Maximizar",
+    "window": "Janela",
+    "portfolioOS": "Portfólio OS",
+    "languages": {
+      "pt": "Português",
+      "en": "English", 
+      "es": "Español"
+    }
+  },
+  "apps": {
+    "about": {
+      "title": "Sobre o App",
+      "greeting": "Olá 👋 Sou Arcádio. Bem-vindo ao meu \"desktop\" interativo de portfólio.",
+      "description": "Este é um portfólio abrangente apresentado como um sistema operacional web totalmente funcional. Explore o ambiente de desktop, interaja com aplicativos, personalize configurações e descubra minha experiência profissional através de uma interface OS imersiva.",
+      "featuresTitle": "🖥️ Recursos do Sistema:",
+      "appsTitle": "📱 Aplicações:",
+      "features": {
+        "windows": "Gerenciamento completo de janelas - arrastar, redimensionar, minimizar, maximizar",
+        "desktop": "Desktop interativo com ícones arrastáveis e posicionamento personalizado",
+        "taskbar": "Barra de tarefas dinâmica com aplicativos em execução e relógio do sistema",
+        "startMenu": "Menu Iniciar com lançador de aplicativos e controles do sistema",
+        "multiLanguage": "Suporte multi-idioma (Inglês, Português, Espanhol)",
+        "themes": "Sistema de temas escuro/claro com detecção automática",
+        "wallpapers": "Sistema dinâmico de papéis de parede com gradientes e imagens personalizadas",
+        "bootSequence": "Sequência de boot autêntica com tempo configurável",
+        "lockScreen": "Funcionalidade de bloqueio de desktop com mecanismos de desbloqueio",
+        "notes": "Aplicativo de notas rico com auto-save e armazenamento persistente",
+        "resume": "Currículo profissional interativo e vitrine de portfólio",
+        "calculator": "Calculadora totalmente funcional com suporte ao teclado",
+        "games": "Jogos integrados incluindo Jogo da Velha",
+        "externalApps": "Integração de aplicativos externos via incorporação iframe",
+        "settings": "Painel de configurações abrangente para personalização do sistema"
+      },
+      "tech": "Construído com tecnologias web modernas: JavaScript ES6+ vanilla, TailwindCSS, templates HTML5, persistência localStorage, design responsivo e arquitetura modular. Zero ferramentas de build, implementação puramente client-side."
+    },
+    "notes": {
+      "title": "Notas",
+      "placeholder": "Suas anotações…",
+      "save": "Salvar",
+      "autosave": "Autosave"
+    },
+    "resume": {
+      "title": "Currículo",
+      "description": "Arcádio Macedo - Engenheiro de Software (pdf)",
+      "stack": "Stack",
+      "stackContent": "PHP (Laravel), JS (Vue), Tailwind, MySQL, Docker, AWS.",
+      "experience": "Experiência",
+      "experienceContent": "8+ anos em SaaS de compliance ambiental (BOMcheck, EC4P).",
+      "contact": "Contato",
+      "email": "Email:"
+    },
+    "calc": {
+      "title": "Calculadora",
+      "error": "Erro"
+    },
+    "ttt": {
+      "title": "Jogo da Velha"
+    },
+    "fuel": {
+      "title": "Consumo de Combustível"
+    },
+    "settings": {
+      "title": "Configurações",
+      "systemSettings": "Configurações do Sistema",
+      "language": {
+        "title": "Idioma"
+      },
+      "theme": {
+        "title": "Tema",
+        "system": "Baseado no sistema",
+        "dark": "Escuro",
+        "light": "Claro"
+      },
+      "clock": {
+        "title": "Relógio",
+        "showDate": "Mostrar data",
+        "dateFormat": "Formato da data:",
+        "timeFormat": "Formato da hora:",
+        "timeFormat24": "24 horas",
+        "timeFormat12": "12 horas (AM/PM)"
+      },
+      "wallpaper": {
+        "title": "Papel de Parede",
+        "color": "Cor de fundo:",
+        "images": "Papéis de Parede:"
+      },
+      "apply": "Aplicar",
+      "reset": "Restaurar Padrões",
+      "resetConfirm": "Restaurar todas as configurações para o padrão?",
+      "applied": "Configurações salvas!",
+      "colors": {
+        "default": "Padrão (Cinza)",
+        "blue": "Azul",
+        "purple": "Roxo", 
+        "green": "Verde",
+        "red": "Vermelho",
+        "amber": "Âmbar",
+        "indigo": "Índigo",
+        "solid": "Sólido"
+      },
+      "dateFormats": {
+        "dd/mm/yyyy": "DD/MM/AAAA",
+        "mm/dd/yyyy": "MM/DD/AAAA",
+        "yyyy-mm-dd": "AAAA-MM-DD"
+      }
+    },
+    "profile": {
+      "name": "Arcádio Macedo",
+      "subtitle": "Portfólio OS"
+    }
+  }
+}

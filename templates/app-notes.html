@@ -1,0 +1,33 @@
+<template id="app-notes">
+    <div class="w-full h-full flex flex-col">
+        <div class="p-2 bg-slate-800/60 border-b border-slate-700 flex gap-2">
+            <button class="px-2 py-1 text-xs rounded bg-slate-700 hover:bg-slate-600"
+                data-cmd="save" data-i18n="apps.notes.save"></button>
+            <span class="text-xs text-slate-400" data-i18n="apps.notes.autosave"></span>
+            <span data-role="status" class="text-xs text-green-400"></span>
+        </div>
+        <textarea class="flex-1 p-4 bg-transparent focus:outline-none" data-i18n-placeholder="apps.notes.placeholder" placeholder="" spellcheck="false">
+        </textarea>
+    </div>
+</template>
+
+<script>
+function initNotes(w) {
+  const ta = $('textarea', w);
+  const key = 'arc.notes';
+  ta.value = localStorage.getItem(key) || '';
+  
+  const save = () => localStorage.setItem(key, ta.value);
+  
+  ta.addEventListener('input', () => {
+    save();
+    $('[data-role="status"]', w).textContent = 'Saved';
+    setTimeout(() => {
+      const statusEl = $('[data-role="status"]', w);
+      if (statusEl) statusEl.textContent = '';
+    }, 800);
+  });
+  
+  $('[data-cmd="save"]', w).onclick = save;
+}
+</script>

@@ -1,0 +1,50 @@
+<template id="app-calc">
+    <div class="p-4 grid gap-2">
+        <input type="text" class="w-full bg-slate-800/60 border border-slate-700 rounded p-2 text-right text-xl" readonly />
+        <div class="grid grid-cols-4 gap-2 text-lg">
+            <button class="btn">7</button>
+            <button class="btn">8</button>
+            <button class="btn">9</button>
+            <button class="btn">/</button>
+            <button class="btn">4</button>
+            <button class="btn">5</button>
+            <button class="btn">6</button>
+            <button class="btn">*</button>
+            <button class="btn">1</button>
+            <button class="btn">2</button>
+            <button class="btn">3</button>
+            <button class="btn">-</button>
+            <button class="btn">0</button>
+            <button class="btn">.</button>
+            <button class="btn">C</button>
+            <button class="btn">+</button>
+            <button class="col-span-4 btn">=</button>
+        </div>
+    </div>
+</template>
+
+<script>
+function initCalc(w) {
+  const out = $('input', w);
+  let buf = '';
+  const put = () => out.value = buf;
+  $$('.btn', w).forEach(b => b.onclick = () => {
+    const t = b.textContent;
+    if (t === 'C') {
+      buf = '';
+      return put();
+    }
+    if (t === '=') {
+      try {
+        buf = String(Function('return ' + buf)());
+      } catch {
+        buf = 'Error';
+      }
+      return put();
+    }
+    buf += t;
+    put();
+  });
+  put();
+}
+</script>

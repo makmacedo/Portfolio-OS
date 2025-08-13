@@ -1,0 +1,158 @@
+html, body { height: 100%; overflow: hidden; }
+
+/* Light theme styles */
+html:not(.dark) .bg-slate-900\/95 { background-color: rgba(248, 250, 252, 0.95) !important; }
+html:not(.dark) .bg-slate-800\/70 { background-color: rgba(241, 245, 249, 0.9) !important; }
+html:not(.dark) .bg-slate-800\/60 { background-color: rgba(248, 250, 252, 0.8) !important; }
+html:not(.dark) .bg-slate-900\/60 { background-color: rgba(248, 250, 252, 0.8) !important; }
+html:not(.dark) .bg-slate-950\/70 { background-color: rgba(248, 250, 252, 0.9) !important; }
+html:not(.dark) .border-slate-700 { border-color: #cbd5e1 !important; }
+html:not(.dark) .text-slate-100 { color: #1e293b !important; }
+html:not(.dark) .text-slate-200\/90 { color: rgba(30, 41, 59, 0.9) !important; }
+html:not(.dark) .text-slate-300 { color: #475569 !important; }
+html:not(.dark) .text-slate-400 { color: #64748b !important; }
+html:not(.dark) .bg-slate-700 { background-color: #e2e8f0 !important; }
+html:not(.dark) .bg-slate-700\/50 { background-color: rgba(226, 232, 240, 0.8) !important; }
+html:not(.dark) .bg-slate-700\/80 { background-color: rgba(226, 232, 240, 0.9) !important; }
+html:not(.dark) .bg-slate-600 { background-color: #cbd5e1 !important; }
+html:not(.dark) .hover\:bg-slate-600:hover { background-color: #cbd5e1 !important; }
+html:not(.dark) .hover\:bg-slate-700:hover { background-color: #cbd5e1 !important; }
+html:not(.dark) .hover\:bg-slate-800:hover { background-color: #cbd5e1 !important; }
+
+/* Login screen exceptions - always keep dark theme styling */
+html:not(.dark) #login-screen-container .bg-slate-700 { background-color: #334155 !important; }
+html:not(.dark) #login-screen-container .bg-slate-600 { background-color: #475569 !important; }
+html:not(.dark) #login-screen-container .hover\:bg-slate-600:hover { background-color: #475569 !important; }
+html:not(.dark) #login-screen-container .bg-slate-800\/90 { background-color: rgba(30, 41, 59, 0.9) !important; }
+html:not(.dark) #login-screen-container .text-slate-100 { color: #f1f5f9 !important; }
+html:not(.dark) #login-screen-container .text-slate-300 { color: #cbd5e1 !important; }
+html:not(.dark) #login-screen-container .text-slate-400 { color: #94a3b8 !important; }
+html:not(.dark) #login-screen-container .text-slate-500 { color: #64748b !important; }
+html:not(.dark) #login-screen-container .border-slate-600 { border-color: #475569 !important; }
+html:not(.dark) #login-screen-container .border-slate-700 { border-color: #334155 !important; }
+#login-screen-container .bg-slate-700 { background-color: #334155 !important; }
+#login-screen-container .bg-slate-600 { background-color: #475569 !important; }
+#login-screen-container .hover\:bg-slate-600:hover { background-color: #475569 !important; }
+#login-screen-container .bg-slate-800\/90 { background-color: rgba(30, 41, 59, 0.9) !important; }
+#login-screen-container .text-slate-100 { color: #f1f5f9 !important; }
+#login-screen-container .text-slate-300 { color: #cbd5e1 !important; }
+#login-screen-container .text-slate-400 { color: #94a3b8 !important; }
+#login-screen-container .text-slate-500 { color: #64748b !important; }
+#login-screen-container .border-slate-600 { border-color: #475569 !important; }
+#login-screen-container .border-slate-700 { border-color: #334155 !important; }
+
+/* Light theme - only apply default background if no custom background is set */
+html:not(.dark) body:not([style*="background-image"]):not([class*="bg-gradient"]):not([class*="bg-blue"]):not([class*="bg-purple"]):not([class*="bg-green"]):not([class*="bg-red"]):not([class*="bg-amber"]):not([class*="bg-indigo"]):not([class*="bg-slate-900"]) {
+  background: linear-gradient(to bottom right, #f1f5f9, #e2e8f0, #f1f5f9);
+}
+
+/* Always apply text color in light theme */
+html:not(.dark) body {
+  color: #1e293b !important;
+}
+
+/* Desktop grid pattern for light theme */
+html:not(.dark) .desktop-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(30, 41, 59, 0.1) 1px, transparent 1px);
+}
+
+/* Desktop grid pattern */
+.desktop-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Window chrome */
+.win { box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.win.dragging { opacity: .95; }
+.resize-handle { position:absolute; width:14px; height:14px; right:2px; bottom:2px; cursor:nwse-resize; }
+
+/* Window control buttons */
+.window-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.window-btn:hover {
+  opacity: 0.8;
+}
+
+.window-btn-close {
+  background-color: #ef4444;
+}
+
+.window-btn-min {
+  background-color: #f59e0b;
+}
+
+.window-btn-max {
+  background-color: #10b981;
+}
+
+/* Selection ring for desktop icons */
+.icon:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; border-radius:.5rem; }
+
+/* Desktop icons positioning */
+.icon {
+  user-select: none;
+  touch-action: none;
+}
+
+.icon.dragging {
+  cursor: grabbing !important;
+}
+
+.icon span {
+  text-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 0 8px rgba(0, 0, 0, 0.6),
+    1px 1px 0 rgba(0, 0, 0, 0.9),
+    -1px -1px 0 rgba(0, 0, 0, 0.9),
+    1px -1px 0 rgba(0, 0, 0, 0.9),
+    -1px 1px 0 rgba(0, 0, 0, 0.9);
+  color: white;
+  font-weight: 500;
+}
+
+html:not(.dark) .icon span {
+  text-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.9),
+    0 0 8px rgba(255, 255, 255, 0.8),
+    1px 1px 0 rgba(255, 255, 255, 1),
+    -1px -1px 0 rgba(255, 255, 255, 1),
+    1px -1px 0 rgba(255, 255, 255, 1),
+    -1px 1px 0 rgba(255, 255, 255, 1);
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* Settings app styles */
+.wallpaper-color, .wallpaper-image {
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  height: 4rem;
+  border-radius: 0.5rem;
+  border: 2px solid #475569;
+  position: relative;
+}
+
+.wallpaper-color:hover, .wallpaper-image:hover {
+  transform: scale(1.05);
+  border-color: #06b6d4;
+}
+
+.wallpaper-color.selected, .wallpaper-image.selected {
+  border-color: #06b6d4;
+  ring: 2px;
+  ring-color: #06b6d4;
+  ring-opacity: 0.5;
+}
+
+/* Clock multi-line support */
+#clock {
+  line-height: 1.2;
+}

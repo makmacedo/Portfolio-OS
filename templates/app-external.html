@@ -1,0 +1,185 @@
+<template id="app-external">
+    <div class="w-full h-full flex flex-col">
+        <!-- Status/Control bar (commented out for clean interface) -->
+        <!--
+        <div class="flex-shrink-0 p-2 bg-slate-800/40 border-b border-slate-700">
+            <div class="flex items-center justify-between">
+                <div class="text-xs text-slate-400" data-role="status">Loading external application...</div>
+                <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1">
+                        <button class="px-1 py-1 text-xs bg-slate-700 hover:bg-slate-600 rounded" 
+                                data-cmd="zoom-out" title="Zoom Out">
+                            🔍-
+                        </button>
+                        <span class="text-xs text-slate-400 min-w-[3rem] text-center" data-role="zoom-level">100%</span>
+                        <button class="px-1 py-1 text-xs bg-slate-700 hover:bg-slate-600 rounded" 
+                                data-cmd="zoom-in" title="Zoom In">
+                            🔍+
+                        </button>
+                    </div>
+                    <button class="px-2 py-1 text-xs bg-slate-700 hover:bg-slate-600 rounded" 
+                            data-cmd="reload" title="Reload">
+                        🔄
+                    </button>
+                    <button class="px-2 py-1 text-xs bg-slate-700 hover:bg-slate-600 rounded" 
+                            data-cmd="open-external" title="Open in New Tab">
+                        🔗
+                    </button>
+                </div>
+            </div>
+        </div>
+        -->
+        <div class="flex-1 overflow-hidden relative">
+            <iframe 
+                class="w-full h-full border-0 origin-top-left" 
+                data-role="iframe"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox">
+            </iframe>
+        </div>
+    </div>
+</template>
+
+<script>
+function initExternal(w, url, appConfig) {
+  const iframe = $('[data-role="iframe"]', w);
+  const statusEl = $('[data-role="status"]', w);
+  const zoomLevelEl = $('[data-role="zoom-level"]', w);
+  const reloadBtn = $('[data-cmd="reload"]', w);
+  const openExternalBtn = $('[data-cmd="open-external"]', w);
+  const zoomInBtn = $('[data-cmd="zoom-in"]', w);
+  const zoomOutBtn = $('[data-cmd="zoom-out"]', w);
+  
+  // Initialize zoom level from config or default to 1.0 (100%)
+  let currentZoom = appConfig?.zoom || 1.0;
+  
+  function updateZoom() {
+    iframe.style.transform = `scale(${currentZoom})`;
+    iframe.style.width = `${100 / currentZoom}%`;
+    iframe.style.height = `${100 / currentZoom}%`;
+    if (zoomLevelEl) {
+      zoomLevelEl.textContent = `${Math.round(currentZoom * 100)}%`;
+    }
+  }
+  
+  // Apply initial zoom
+  updateZoom();
+  
+  if (!url) {
+    if (statusEl) {
+      statusEl.textContent = 'Error: No URL provided';
+      statusEl.className = statusEl.className + ' text-red-400';
+    }
+    iframe.src = 'about:blank';
+    return;
+  }
+  
+  // Set iframe URL
+  iframe.src = url;
+  if (statusEl) {
+    statusEl.textContent = 'Loading application...';
+    statusEl.className = statusEl.className.replace(' text-red-400', '');
+  }
+  
+  // Add a loading overlay to prevent iframe from capturing events during drag
+  const loadingOverlay = document.createElement('div');
+  loadingOverlay.className = 'absolute inset-0 bg-transparent z-10 pointer-events-none';
+  loadingOverlay.id = 'iframe-overlay';
+  iframe.parentElement.appendChild(loadingOverlay);
+  
+  // Handle iframe events
+  iframe.onload = () => {
+    // Remove loading overlay after iframe loads
+    setTimeout(() => {
+      if (loadingOverlay && loadingOverlay.parentElement) {
+        loadingOverlay.remove();
+      }
+    }, 500);
+    
+    if (statusEl) {
+      try {
+        // Try to access the iframe to check if it loaded successfully
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (iframeDoc && iframeDoc.title !== 'about:blank') {
+          statusEl.textContent = 'Application loaded';
+          statusEl.className = statusEl.className.replace(' text-red-400', '') + ' text-green-400';
+        } else {
+          throw new Error('Access denied or blank page');
+        }
+      } catch (e) {
+        // Cross-origin or other access issues - assume it loaded correctly
+        statusEl.textContent = 'Application loaded';
+        statusEl.className = statusEl.className.replace(' text-red-400', '') + ' text-green-400';
+      }
+      
+      setTimeout(() => {
+        statusEl.textContent = '';
+        statusEl.className = statusEl.className.replace(' text-green-400', '');
+      }, 1000);
+    }
+  };
+  
+  iframe.onerror = () => {
+    if (statusEl) {
+      statusEl.textContent = 'Error loading external application';
+      statusEl.className = statusEl.className + ' text-red-400';
+    }
+  };
+  
+  // Timeout for loading
+  const loadTimeout = setTimeout(() => {
+    if (statusEl && statusEl.textContent.includes('Loading')) {
+      statusEl.textContent = 'Application loaded (timeout reached)';
+      statusEl.className = statusEl.className.replace(' text-red-400', '') + ' text-yellow-400';
+      setTimeout(() => {
+        statusEl.textContent = '';
+        statusEl.className = statusEl.className.replace(' text-yellow-400', '');
+      }, 2000);
+    }
+  }, 10000); // 10 second timeout
+  
+  // Clear timeout if load completes
+  const originalOnload = iframe.onload;
+  iframe.onload = function() {
+    clearTimeout(loadTimeout);
+    if (originalOnload) originalOnload.call(this);
+  };
+  
+  // Zoom functionality
+  if (zoomInBtn) {
+    zoomInBtn.onclick = () => {
+      currentZoom = Math.min(2.0, currentZoom + 0.1);
+      updateZoom();
+    };
+  }
+  
+  if (zoomOutBtn) {
+    zoomOutBtn.onclick = () => {
+      currentZoom = Math.max(0.3, currentZoom - 0.1);
+      updateZoom();
+    };
+  }
+  
+  // Reload functionality
+  if (reloadBtn) {
+    reloadBtn.onclick = () => {
+      if (statusEl) {
+        statusEl.textContent = 'Reloading...';
+        statusEl.className = statusEl.className.replace(/text-(red|green|yellow)-400/g, '');
+      }
+      iframe.src = iframe.src;
+    };
+  }
+  
+  // Open in new tab functionality
+  if (openExternalBtn) {
+    openExternalBtn.onclick = () => {
+      window.open(url, '_blank');
+    };
+  }
+  
+  // Store URL for reference
+  w.dataset.externalUrl = url;
+  
+  debugLog(`External app initialized with URL: ${url}, zoom: ${currentZoom}`, 'app');
+}
+</script>
