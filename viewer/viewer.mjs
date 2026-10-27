@@ -10,7 +10,7 @@ let zoom = 'fit';
 let scale = 1;
 let revision = 0;
 let resizeTimer;
-let printing = false;
+let printPreparation;
 const status = message => { $('status').textContent = message; };
 
 function updateControls() {
@@ -101,14 +101,12 @@ document.addEventListener('keydown', event => {
     goToPage(currentPage + (event.key === 'PageDown' ? 1 : -1));
   }
 });
-$('print').addEventListener('click', async () => {
-  if (!pdf || printing) return;
-  printing = true;
-  $('print').disabled = true;
-  const pages = $('print-pages');
-  pages.replaceChildren();
-  status('Preparing pages for printing...');
-  try {
+// Prepare once after loading, so browser-menu printing also has every page.
+// Keep the canvases after print: a second browser-menu print must work too.
+function preparePrintPages() {
+  if (printPreparation) return printPreparation;
+  printPreparation = (async () => {
+    const fragment = document.createDocumentFragment();
     for (let number = 1; number <= pdf.numPages; number++) {
       const page = await pdf.getPage(number);
       const viewport = page.getViewport({ scale: 2 });
@@ -118,20 +116,29 @@ $('print').addEventListener('click', async () => {
       const wrapper = document.createElement('div');
       wrapper.className = 'print-page';
       wrapper.append(canvas);
-      pages.append(wrapper);
+      fragment.append(wrapper);
       await page.render({ canvasContext: canvas.getContext('2d'), viewport, intent: 'print' }).promise;
     }
-    status('');
+    $('print-pages').replaceChildren(fragment);
+    document.body.classList.add('print-ready');
+    $('print').disabled = false;
+  })().catch(error => {
+    printPreparation = null;
+    throw error;
+  });
+  return printPreparation;
+}
+$('print').addEventListener('click', async () => {
+  if (!pdf) return;
+  try {
+    await preparePrintPages();
     window.print();
   } catch (error) {
     console.error('CV print failed:', error);
     status('Printing is unavailable here. Please use Open PDF or Download above.');
-  } finally {
-    printing = false;
-    $('print').disabled = false;
   }
 });
-window.addEventListener('afterprint', () => $('print-pages').replaceChildren());
+
 try {
   // Dynamic import keeps the local viewer and its download fallback usable if the CDN fails.
   const pdfjs = await import(`${PDFJS_BASE}/build/pdf.min.mjs`);
@@ -142,8 +149,12 @@ try {
     isEvalSupported: false }).promise;
   $('count').textContent = `/ ${pdf.numPages}`;
   $('page').max = pdf.numPages;
-  for (const id of ['page', 'zoom', 'print']) $(id).disabled = false;
+  for (const id of ['page', 'zoom']) $(id).disabled = false;
   await renderPage();
+  preparePrintPages().catch(error => {
+    console.error('CV print preparation failed:', error);
+    status('Printing is unavailable here. Please use Open PDF or Download above.');
+  });
 } catch (error) {
   console.error('CV load failed:', error);
   status('The CV could not be loaded. Please use Open PDF or Download above.');
