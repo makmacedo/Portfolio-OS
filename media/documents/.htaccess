@@ -1,0 +1,14 @@
+# Serve the current CV at https://cv.macedo.tech/.
+DirectoryIndex Arcadio_Macedo_CV.pdf
+
+<IfModule mod_mime.c>
+    AddType application/pdf .pdf
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.pdf$">
+        Header set Content-Disposition "inline"
+        Header set Access-Control-Allow-Origin "*"
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+</IfModule>
