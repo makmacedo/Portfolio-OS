@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Arcadio Macedo CV</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/web/pdf_viewer.css"><link rel="stylesheet" href="viewer.css"></head>
+<body>
+<nav class="toolbar" aria-label="PDF controls">
+<button id="previous" aria-label="Previous page" disabled>&larr;</button>
+<label for="page">Page</label><input id="page" type="number" min="1" value="1" aria-label="Page number" disabled><span id="count">/ ...</span>
+<button id="next" aria-label="Next page" disabled>&rarr;</button><span class="divider" aria-hidden="true"></span>
+<button id="zoom-out" aria-label="Zoom out" disabled>&minus;</button>
+<select id="zoom" aria-label="Zoom" disabled><option value="fit">Fit width</option><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
+<button id="zoom-in" aria-label="Zoom in" disabled>+</button><button id="print" disabled>Print</button>
+</nav>
+<div id="status" role="status" aria-live="polite">Loading CV...</div>
+<main id="viewport" aria-label="CV page"><div id="page-host"></div></main>
+<div id="print-pages" aria-hidden="true"></div>
+<script type="module" src="viewer.mjs"></script>
+</body></html>

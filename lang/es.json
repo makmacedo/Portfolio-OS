@@ -55,13 +55,16 @@
     },
     "resume": {
       "title": "Currículum",
-      "description": "Arcádio Macedo - Ingeniero de Software (pdf)",
+      "description": "Arcadio Macedo - Engineering Manager (PDF)",
       "stack": "Stack",
       "stackContent": "PHP (Laravel), JS (Vue), Tailwind, MySQL, Docker, AWS.",
       "experience": "Experiencia",
       "experienceContent": "8+ años en SaaS de cumplimiento ambiental (BOMcheck, EC4P).",
       "contact": "Contacto",
-      "email": "Email:"
+      "email": "Email:",
+      "open": "Abrir PDF",
+      "download": "Descargar",
+      "help": "Use los controles del PDF para cambiar de página, ampliar o imprimir. Si la vista previa no está disponible, seleccione Abrir PDF."
     },
     "calc": {
       "title": "Calculadora",

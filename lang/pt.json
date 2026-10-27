@@ -17,7 +17,7 @@
     "portfolioOS": "Portfólio OS",
     "languages": {
       "pt": "Português",
-      "en": "English", 
+      "en": "English",
       "es": "Español"
     }
   },
@@ -55,13 +55,16 @@
     },
     "resume": {
       "title": "Currículo",
-      "description": "Arcádio Macedo - Engenheiro de Software (pdf)",
+      "description": "Arcadio Macedo - Engineering Manager (PDF)",
       "stack": "Stack",
       "stackContent": "PHP (Laravel), JS (Vue), Tailwind, MySQL, Docker, AWS.",
       "experience": "Experiência",
       "experienceContent": "8+ anos em SaaS de compliance ambiental (BOMcheck, EC4P).",
       "contact": "Contato",
-      "email": "Email:"
+      "email": "Email:",
+      "open": "Abrir PDF",
+      "download": "Descarregar",
+      "help": "Use os controlos do PDF para mudar de página, ampliar ou imprimir. Se a pré-visualização não estiver disponível, selecione Abrir PDF."
     },
     "calc": {
       "title": "Calculadora",
@@ -105,7 +108,7 @@
       "colors": {
         "default": "Padrão (Cinza)",
         "blue": "Azul",
-        "purple": "Roxo", 
+        "purple": "Roxo",
         "green": "Verde",
         "red": "Vermelho",
         "amber": "Âmbar",

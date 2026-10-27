@@ -7,7 +7,7 @@
   "profiles": {
     "default": {
       "name": "Arcadio Macedo",
-      "subtitle": "Web Developer",
+      "subtitle": "Engineering Manager",
       "avatar": "AM",
       "theme": "system",
       "language": "en",
@@ -169,7 +169,13 @@
       "category": "productivity",
       "title": "apps.resume.title",
       "icon": "📄",
-      "showOnDesktop": true
+      "showOnDesktop": true,
+      "window": {
+        "left": 24,
+        "top": 24,
+        "width": 900,
+        "height": 780
+      }
     },
     {
       "id": "calc",

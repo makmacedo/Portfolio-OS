@@ -1,28 +1,13 @@
 <template id="app-resume">
-    <div class="w-full h-full overflow-auto">
-        <div class="p-6 space-y-2">
-            <h2 class="text-xl font-semibold" data-i18n="apps.resume.title">
-            </h2>
-            <p class="text-sm text-slate-300" data-i18n="apps.resume.description"></p>
-            <div class="grid grid-cols-1 gap-4 mt-4 text-sm md:grid-cols-2">
-                <div>
-                    <h3 class="font-medium" data-i18n="apps.resume.stack"></h3>
-                    <p data-i18n="apps.resume.stackContent"></p>
-                </div>
-                <div>
-                    <h3 class="font-medium" data-i18n="apps.resume.experience"></h3>
-                    <p data-i18n="apps.resume.experienceContent"></p>
-                </div>
-                <div>
-                    <h3 class="font-medium" data-i18n="apps.resume.contact"></h3>
-                    <p>
-                        <span data-i18n="apps.resume.email"></span>
-                        <a class="underline text-brand-400" href="mailto:arcadio@macedo.tech">
-                            arcadio@macedo.tech
-                        </a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <section class="resume-viewer" aria-label="CV PDF viewer">
+        <header class="resume-toolbar">
+            <div class="resume-document"><span class="resume-pdf-badge" aria-hidden="true">PDF</span><span>Arcadio_Macedo_CV.pdf</span></div>
+            <nav class="resume-actions" aria-label="CV actions">
+                <a href="media/documents/Arcadio_Macedo_CV.pdf?v=92bf62ab" target="_blank" rel="noopener noreferrer" data-i18n="apps.resume.open">Open PDF</a>
+                <a href="media/documents/Arcadio_Macedo_CV.pdf?v=92bf62ab" download="Arcadio_Macedo_CV.pdf" data-i18n="apps.resume.download">Download</a>
+            </nav>
+        </header>
+        <iframe class="resume-pdf" src="viewer/index.html?v=92bf62ab" title="Arcadio Macedo CV PDF" loading="eager"></iframe>
+        <footer class="resume-help"><span data-i18n="apps.resume.help">Use the PDF controls to change pages, zoom or print. If the preview is unavailable, select Open PDF.</span></footer>
+    </section>
 </template>
