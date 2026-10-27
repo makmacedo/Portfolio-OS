@@ -20,4 +20,4 @@ The approved CV is stored at `media/documents/Arcadio_Macedo_CV.pdf`. Replace th
 
 PDF.js 6.4.299 loads from `https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/`. The renderer, worker, viewer CSS and fallback fonts use the same pinned release. No vendor files, dependency installation or build step are required.
 
-This suits the current Hostinger deployment: a push to `master` triggers a webhook that pulls the static repository. Serve the local `.mjs` viewer file with a JavaScript MIME type and use HTTP(S), not a local file URL. PDF.js is maintained by Mozilla and licensed under Apache-2.0: https://github.com/mozilla/pdf.js/blob/master/LICENSE
+This suits the current Hostinger deployment: a push to `master` triggers a webhook that pulls the static repository. The local module uses a `.js` extension for compatibility with shared-hosting MIME defaults. Use HTTP(S), not a local file URL. PDF.js is maintained by Mozilla and licensed under Apache-2.0: https://github.com/mozilla/pdf.js/blob/master/LICENSE
