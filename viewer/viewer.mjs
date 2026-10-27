@@ -11,7 +11,44 @@ let scale = 1;
 let revision = 0;
 let resizeTimer;
 let printPreparation;
-const status = message => { $('status').textContent = message; };
+let labels = {"controls": "PDF controls", "previous": "Previous page", "next": "Next page", "page": "Page", "pageNumber": "Page number", "zoom": "Zoom", "zoomOut": "Zoom out", "zoomIn": "Zoom in", "fit": "Fit width", "print": "Print", "loading": "Loading CV...", "pageLabel": "CV page {page}", "previewError": "The preview could not be displayed. Please use Open PDF or Download above.", "printError": "Printing is unavailable here. Please use Open PDF or Download above.", "loadError": "The CV could not be loaded. Please use Open PDF or Download above."};
+let statusKey = 'loading';
+let languageRevision = 0;
+function message(key, values = {}) {
+  return (labels[key] || key).replace(/\{(\w+)\}/g, (_, name) => values[name] ?? '');
+}
+const status = key => { statusKey = key; $('status').textContent = key ? message(key) : ''; };
+async function applyLanguage(requested) {
+  const request = ++languageRevision;
+  const language = ['en', 'pt', 'es'].includes(requested) ? requested : 'en';
+  try {
+    const response = await fetch(new URL(`../lang/${language}.json`, import.meta.url));
+    if (!response.ok) throw new Error(`Locale HTTP ${response.status}`);
+    const data = await response.json();
+    if (request !== languageRevision) return;
+    labels = data.apps.resume.viewer;
+    document.documentElement.lang = language;
+    for (const element of document.querySelectorAll('[data-viewer-text]')) {
+      element.textContent = message(element.dataset.viewerText);
+    }
+    for (const element of document.querySelectorAll('[data-viewer-label]')) {
+      element.setAttribute('aria-label', message(element.dataset.viewerLabel));
+    }
+    document.querySelector('.textLayer')?.setAttribute('aria-label', message('pageLabel', { page: currentPage }));
+    status(statusKey);
+  } catch (error) {
+    console.warn('CV language could not be loaded:', error);
+  }
+}
+function storedLanguage() {
+  try { return localStorage.getItem('arc.language') || 'en'; }
+  catch { return 'en'; }
+}
+// A standalone viewer may select a language explicitly; the OS uses its stored preference.
+applyLanguage(new URLSearchParams(location.search).get('lang') || storedLanguage());
+window.addEventListener('storage', event => {
+  if (event.key === 'arc.language' || event.key === null) applyLanguage(event.newValue || storedLanguage());
+});
 
 function updateControls() {
   $('page').value = currentPage;
@@ -51,7 +88,7 @@ async function renderPage(resetScroll = false) {
     $('page-host').replaceChildren(wrapper);
     const text = document.createElement('div');
     text.className = 'textLayer';
-    text.setAttribute('aria-label', `CV page ${currentPage}`);
+    text.setAttribute('aria-label', message('pageLabel', { page: currentPage }));
     wrapper.append(text);
     await new TextLayer({ textContentSource: await page.getTextContent(), container: text, viewport }).render();
     if (request !== revision) return;
@@ -61,7 +98,7 @@ async function renderPage(resetScroll = false) {
   } catch (error) {
     if (request !== revision) return;
     console.error('CV render failed:', error);
-    status('The preview could not be displayed. Please use Open PDF or Download above.');
+    status('previewError');
   }
 }
 
@@ -135,7 +172,7 @@ $('print').addEventListener('click', async () => {
     window.print();
   } catch (error) {
     console.error('CV print failed:', error);
-    status('Printing is unavailable here. Please use Open PDF or Download above.');
+    status('printError');
   }
 });
 
@@ -153,9 +190,9 @@ try {
   await renderPage();
   preparePrintPages().catch(error => {
     console.error('CV print preparation failed:', error);
-    status('Printing is unavailable here. Please use Open PDF or Download above.');
+    status('printError');
   });
 } catch (error) {
   console.error('CV load failed:', error);
-  status('The CV could not be loaded. Please use Open PDF or Download above.');
+  status('loadError');
 }

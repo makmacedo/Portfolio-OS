@@ -64,7 +64,24 @@
       "email": "Email:",
       "open": "Open PDF",
       "download": "Download",
-      "help": "Use the PDF controls to change pages, zoom or print. If the preview is unavailable, select Open PDF."
+      "help": "Use the PDF controls to change pages, zoom or print. If the preview is unavailable, select Open PDF.",
+      "viewer": {
+        "controls": "PDF controls",
+        "previous": "Previous page",
+        "next": "Next page",
+        "page": "Page",
+        "pageNumber": "Page number",
+        "zoom": "Zoom",
+        "zoomOut": "Zoom out",
+        "zoomIn": "Zoom in",
+        "fit": "Fit width",
+        "print": "Print",
+        "loading": "Loading CV...",
+        "pageLabel": "CV page {page}",
+        "previewError": "The preview could not be displayed. Please use Open PDF or Download above.",
+        "printError": "Printing is unavailable here. Please use Open PDF or Download above.",
+        "loadError": "The CV could not be loaded. Please use Open PDF or Download above."
+      }
     },
     "calc": {
       "title": "Calculator",

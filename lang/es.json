@@ -64,7 +64,24 @@
       "email": "Email:",
       "open": "Abrir PDF",
       "download": "Descargar",
-      "help": "Use los controles del PDF para cambiar de página, ampliar o imprimir. Si la vista previa no está disponible, seleccione Abrir PDF."
+      "help": "Use los controles del PDF para cambiar de página, ampliar o imprimir. Si la vista previa no está disponible, seleccione Abrir PDF.",
+      "viewer": {
+        "controls": "Controles del PDF",
+        "previous": "Página anterior",
+        "next": "Página siguiente",
+        "page": "Página",
+        "pageNumber": "Número de página",
+        "zoom": "Ampliación",
+        "zoomOut": "Reducir",
+        "zoomIn": "Ampliar",
+        "fit": "Ajustar al ancho",
+        "print": "Imprimir",
+        "loading": "Cargando currículum...",
+        "pageLabel": "Página {page} del currículum",
+        "previewError": "No se pudo mostrar la vista previa. Seleccione Abrir PDF o Descargar arriba.",
+        "printError": "La impresión no está disponible aquí. Seleccione Abrir PDF o Descargar arriba.",
+        "loadError": "No se pudo cargar el currículum. Seleccione Abrir PDF o Descargar arriba."
+      }
     },
     "calc": {
       "title": "Calculadora",
